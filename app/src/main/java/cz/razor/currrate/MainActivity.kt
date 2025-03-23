@@ -124,7 +124,7 @@ fun MainScreen(navController: NavHostController) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Crypto App") },
+                title = { Text("Currency Rates App") },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = Color.White
@@ -181,7 +181,7 @@ fun MainScreen(navController: NavHostController) {
             }
         }
     ) { innerPadding ->
-        Navigation(navController = navController, innerPadding = innerPadding)
+        // Navigation(navController = navController, innerPadding = innerPadding)
     }
 }
 
