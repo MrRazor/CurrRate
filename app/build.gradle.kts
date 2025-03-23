@@ -63,21 +63,17 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    //koin (pro dependency injection)
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
-    // Retrofit
+
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
 
-    // OkHttp (pro logování)
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
 
-    //objectbox (nosql) pro datovou persistenci (vektorová DB)
     implementation("io.objectbox:objectbox-android:4.2.0")
 
-    //datastore (náhrada za shared preferences) pro ukládání dat typu klíč hodnota
     implementation("androidx.datastore:datastore-preferences:1.0.0")
     implementation("io.coil-kt:coil-compose:2.5.0")
     implementation("androidx.work:work-runtime-ktx:2.10.0")
