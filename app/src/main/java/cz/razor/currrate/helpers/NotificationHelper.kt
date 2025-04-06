@@ -17,7 +17,7 @@ import cz.razor.currrate.MainActivity
 class NotificationHelper(private val context: Context) {
 
     companion object {
-        const val CHANNEL_ID = "crypto_channel"
+        const val CHANNEL_ID = "currency_channel"
         var notificationCounter = 1
     }
 

@@ -1,6 +1,5 @@
 package cz.razor.currrate
 
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -28,26 +27,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.app.ActivityCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
-import android.Manifest
-import android.content.pm.PackageManager
 import android.widget.Toast
-import androidx.work.Constraints
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
 import cz.razor.currrate.consts.BottomNavItem
 import cz.razor.currrate.consts.Routes
+import cz.razor.currrate.helpers.NotificationSchedulerHelper
+import cz.razor.currrate.helpers.PermissionHelper
 import cz.razor.currrate.theme.CurrRateAppTheme
-import cz.razor.currrate.workers.NotificationWorker
-import java.util.concurrent.TimeUnit
+import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +46,12 @@ class MainActivity : ComponentActivity() {
         startKoin {
             androidContext(this@MainActivity)
             modules(
-
+                repositoryModule,
+                viewModelModule,
+                networkModule,
+                objectBoxModule,
+                imageModule,
+                helperModule
             )
         }
         setContent {
@@ -64,39 +60,12 @@ class MainActivity : ComponentActivity() {
                 MainScreen(navController)
             }
         }
-        requestNotificationPermission()
-        scheduleNotificationWorker()
-    }
 
-    private fun scheduleNotificationWorker() {
-        val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
-            .build()
+        val permissionHelper = PermissionHelper(this)
+        permissionHelper.requestNotificationPermission()
 
-        val notificationWorkRequest = PeriodicWorkRequestBuilder<NotificationWorker>(
-            1, TimeUnit.HOURS
-        )
-            .setConstraints(constraints)
-            .build()
-
-
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-            "notificationWork",
-            ExistingPeriodicWorkPolicy.KEEP,
-            notificationWorkRequest
-        )
-    }
-
-    private fun requestNotificationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }
-        }
+        val notificationSchedulerHelper: NotificationSchedulerHelper by inject()
+        notificationSchedulerHelper.scheduleNotificationWorker()
     }
 
     private val requestPermissionLauncher = registerForActivityResult(
