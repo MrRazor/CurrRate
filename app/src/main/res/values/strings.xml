@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">CurrRate</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="no_favourite_currency">No favourite crypto yet.</string>
+    <string name="delete_confirmation_title">Delete from favourites</string>
+    <string name="delete_confirmation_message">Do you really want to delete %s from favourites?</string>
+    <string name="entry_currency_name_label">Enter name of currency</string>
+    <string name="i_know_what_i_am_doing_label">Yes, I know what I am doing</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_remove">Remove</string>
 </resources>

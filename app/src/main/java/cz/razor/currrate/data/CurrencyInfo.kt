@@ -8,5 +8,6 @@ import io.objectbox.annotation.Unique
 data class CurrencyInfo(
     @Id var id: Long = 0,
     @Unique var code: String,
-    var name: String
+    var name: String,
+    var isToCurrencyFavourite: Boolean = false
 )

@@ -18,6 +18,7 @@ import cz.razor.currrate.repository.CurrencyInfoRepository
 import cz.razor.currrate.repository.CurrencyRateRepository
 import cz.razor.currrate.repository.SettingsRepository
 import cz.razor.currrate.viewmodels.CurrencyViewModel
+import cz.uhk.fim.cryptoapp.viewmodels.SettingsViewModel
 import io.objectbox.BoxStore
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -41,6 +42,7 @@ val repositoryModule = module {
 
 val viewModelModule = module {
     viewModel { CurrencyViewModel(get(), get(), get()) }
+    viewModel { SettingsViewModel(get()) }
 }
 
 val imageModule = module {

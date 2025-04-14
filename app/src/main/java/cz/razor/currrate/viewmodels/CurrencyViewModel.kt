@@ -134,4 +134,22 @@ class CurrencyViewModel(private val frankfurterApi: FrankfurterApi, private val 
         }
     }
 
+    fun addFavoriteCurrency(currencyInfo: CurrencyInfo) {
+        viewModelScope.launch {
+            val updatedCurrencyInfo = currencyInfo.copy(isToCurrencyFavourite = true)
+            currencyInfoRepository.update(updatedCurrencyInfo)
+            getCurrencyDetailList()
+            getSingleCurrencyDetail(currencyInfo.code)
+        }
+    }
+
+    fun removeFavoriteCurrency(currencyInfo: CurrencyInfo) {
+        viewModelScope.launch {
+            val updatedCurrencyInfo = currencyInfo.copy(isToCurrencyFavourite = false)
+            currencyInfoRepository.update(updatedCurrencyInfo)
+            getCurrencyDetailList()
+            getSingleCurrencyDetail(currencyInfo.code)
+        }
+    }
+
 }

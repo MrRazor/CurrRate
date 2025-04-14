@@ -23,6 +23,13 @@ class CurrencyInfoRepository(private val box: Box<CurrencyInfo>) {
         }
     }
 
+    fun update(currencyInfo: CurrencyInfo) {
+        box.put(currencyInfo)
+    }
+
+    fun getAllFavourites(): List<CurrencyInfo> =
+        box.query(CurrencyInfo_.isToCurrencyFavourite.equal(true)).build().find()
+
     fun getAll(): List<CurrencyInfo> = box.all
 
     fun getByCode(code: String): CurrencyInfo? =

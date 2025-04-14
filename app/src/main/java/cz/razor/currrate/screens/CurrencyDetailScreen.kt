@@ -1,5 +1,6 @@
 package cz.razor.currrate.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,18 +9,28 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cz.razor.currrate.api.ApiResult
 import cz.razor.currrate.viewmodels.CurrencyViewModel
+import cz.uhk.fim.cryptoapp.dialogs.DeleteCurrencyConfirmationDialog
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 
@@ -33,6 +44,9 @@ fun CurrencyDetailScreen(
 ) {
     val currency by viewModel.currency.collectAsState()
     val currencyDetail by viewModel.currencyDetail.collectAsState()
+
+    var showDeleteConfirmDialog by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.getSingleCurrency(base, to, date)
@@ -49,6 +63,7 @@ fun CurrencyDetailScreen(
             }
 
             is ApiResult.Success -> {
+                val currency = (currency as ApiResult.Success).data
                 when (currencyDetail) {
                     is ApiResult.Loading -> {
                         Box(modifier = Modifier.fillMaxSize()) {
@@ -56,7 +71,6 @@ fun CurrencyDetailScreen(
                         }
                     }
                     is ApiResult.Success -> {
-                        val currency = (currency as ApiResult.Success).data
                         val currencyDetail = (currencyDetail as ApiResult.Success).data
                         Row(
                             modifier = Modifier
@@ -69,6 +83,28 @@ fun CurrencyDetailScreen(
                                 Text(text = "From: 1 ${currency.baseCurrency}")
                                 Text(text = "Rate: ${currency.rate} ${currency.toCurrency}")
                             }
+                            IconButton(onClick = {
+                                if(!currencyDetail.isToCurrencyFavourite){
+                                    viewModel.addFavoriteCurrency(currencyDetail)
+                                }else{
+                                    showDeleteConfirmDialog = true
+                                }
+                            }) {
+                                if (currencyDetail.isToCurrencyFavourite) {
+                                    Icon(Icons.Filled.Favorite, contentDescription = "Remove from Favorites")
+                                } else {
+                                    Icon(Icons.Filled.FavoriteBorder, contentDescription = "Add to Favorites")
+                                }
+                            }
+                        }
+                        if(showDeleteConfirmDialog){
+                            DeleteCurrencyConfirmationDialog(currencyDetail.code, onConfirmDelete = {
+                                viewModel.removeFavoriteCurrency(currencyDetail)
+                                showDeleteConfirmDialog = false
+                            }, onDismiss = {
+                                showDeleteConfirmDialog = false
+                                Toast.makeText(context, "User canceled the deletion", Toast.LENGTH_SHORT).show();
+                            })
                         }
                     }
                     is ApiResult.Error -> {
