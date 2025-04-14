@@ -27,4 +27,10 @@ class CurrencyInfoRepository(private val box: Box<CurrencyInfo>) {
 
     fun getByCode(code: String): CurrencyInfo? =
         box.query(CurrencyInfo_.code.equal(code)).build().findFirst()
+
+    fun getById(id: Long): CurrencyInfo? {
+        return box.query(CurrencyInfo_.id.equal(id))
+            .build()
+            .findFirst()
+    }
 }

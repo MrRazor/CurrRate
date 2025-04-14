@@ -102,4 +102,10 @@ class CurrencyRateRepository(private val box: Box<CurrencyRate>) {
             .build()
             .findFirst()
     }
+
+    fun getRateById(id: Long): CurrencyRate? {
+        return box.query(CurrencyRate_.id.equal(id))
+            .build()
+            .findFirst()
+    }
 }

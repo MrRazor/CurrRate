@@ -1,12 +1,14 @@
 package cz.razor.currrate.consts
 
+import java.time.LocalDate
+
 object Routes {
     const val CurrencyList = "currencyList"
-    const val CurrencyDetail = "currencyDetail/{currencyId}"
+    const val CurrencyDetail = "currencyDetail/{base}/{to}/{date}"
     const val FavouriteCurrency = "favouriteCurrency"
     const val Settings = "settings"
 
-    fun currencyDetail(currencyId: String): String {
-        return "currencyDetail/$currencyId"
+    fun currencyDetail(base: String, to: String, date: LocalDate): String {
+        return "currencyDetail/$base/$to/$date"
     }
 }

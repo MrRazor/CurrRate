@@ -40,9 +40,11 @@ import cz.razor.currrate.consts.BottomNavItem
 import cz.razor.currrate.consts.Routes
 import cz.razor.currrate.helpers.NotificationSchedulerHelper
 import cz.razor.currrate.helpers.PermissionHelper
+import cz.razor.currrate.screens.CurrencyDetailScreen
 import cz.razor.currrate.screens.CurrencyListScreen
 import cz.razor.currrate.theme.CurrRateAppTheme
 import org.koin.android.ext.android.inject
+import java.time.LocalDate
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -182,6 +184,14 @@ fun Navigation(navController: NavHostController, innerPadding: PaddingValues) {
         modifier = Modifier.padding(innerPadding)
     ) {
         composable(Routes.CurrencyList) { CurrencyListScreen(navController) }
+        composable(Routes.CurrencyDetail) { navBackStackEntry ->
+            val base = navBackStackEntry.arguments?.getString("base")
+            val to = navBackStackEntry.arguments?.getString("to")
+            val date = navBackStackEntry.arguments?.getString("date")
+            if (base != null && to != null && date != null) {
+                CurrencyDetailScreen(base, to, LocalDate.parse(date))
+            }
+        }
     }
 }
 
