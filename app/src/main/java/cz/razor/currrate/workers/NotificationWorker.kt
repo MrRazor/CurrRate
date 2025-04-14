@@ -13,7 +13,7 @@ class NotificationWorker(appContext: Context, workerParams: WorkerParameters) :
     private val notificationHelper: NotificationHelper by inject()
 
     override fun doWork(): Result {
-        notificationHelper.showNotification("CryptoApp", "Nezapomeň zkontrolovat ceny kryptoměn!")
+        notificationHelper.showNotification("CurrRate", "Nezapomeň zkontrolovat kurzy měn!")
 
         return Result.success()
     }

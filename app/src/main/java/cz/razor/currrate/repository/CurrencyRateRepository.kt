@@ -73,6 +73,23 @@ class CurrencyRateRepository(private val box: Box<CurrencyRate>) {
         }
     }
 
+    fun getLatestRatesForBase(baseCurrency: String): List<CurrencyRate> {
+        val latestDate = box.query(CurrencyRate_.baseCurrency.equal(baseCurrency))
+            .orderDesc(CurrencyRate_.date)
+            .build()
+            .findFirst()
+            ?.date
+
+        return if (latestDate != null) {
+            box.query(
+                CurrencyRate_.baseCurrency.equal(baseCurrency)
+                    .and(CurrencyRate_.date.equal(latestDate.toEpochDay()))
+            ).build().find()
+        } else {
+            emptyList()
+        }
+    }
+
     fun getRatesForBaseAndDate(baseCurrency: String, date: LocalDate): List<CurrencyRate> {
         return box.query(CurrencyRate_.baseCurrency.equal(baseCurrency).and(CurrencyRate_.date.equal(date.toEpochDay())))
             .build()

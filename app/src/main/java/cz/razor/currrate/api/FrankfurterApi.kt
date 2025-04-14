@@ -9,15 +9,21 @@ import retrofit2.Response
 
 interface FrankfurterApi {
 
+    @GET("v1/latest")
+    suspend fun getRatesLatest(
+        @Query("base") base: String? = null,
+        @Query("symbols") symbols: String? = null
+    ): Response<ExchangeRatesSingleDayResponse>
+
     @GET("v1/{date}")
-    fun getRatesForDay(
+    suspend fun getRatesForDay(
         @Path("date") date: String,
         @Query("base") base: String? = null,
         @Query("symbols") symbols: String? = null
     ): Response<ExchangeRatesSingleDayResponse>
 
     @GET("v1/{startDate}..{endDate}")
-    fun getRatesForPeriod(
+    suspend fun getRatesForPeriod(
         @Path("startDate") startDate: String,
         @Path("endDate") endDate: String,
         @Query("base") base: String? = null,
@@ -25,5 +31,5 @@ interface FrankfurterApi {
     ): Response<ExchangeRatesPeriodResponse>
 
     @GET("v1/currencies")
-    fun getCurrencies(): Response<Map<String, String>>
+    suspend fun getCurrencies(): Response<Map<String, String>>
 }

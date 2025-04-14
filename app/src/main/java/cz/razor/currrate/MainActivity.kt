@@ -33,10 +33,14 @@ import androidx.navigation.compose.rememberNavController
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import android.widget.Toast
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import cz.razor.currrate.consts.BottomNavItem
 import cz.razor.currrate.consts.Routes
 import cz.razor.currrate.helpers.NotificationSchedulerHelper
 import cz.razor.currrate.helpers.PermissionHelper
+import cz.razor.currrate.screens.CurrencyListScreen
 import cz.razor.currrate.theme.CurrRateAppTheme
 import org.koin.android.ext.android.inject
 
@@ -90,6 +94,9 @@ fun MainScreen(navController: NavHostController) {
         BottomNavItem.FavouriteCurrency
     )
 
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -98,13 +105,26 @@ fun MainScreen(navController: NavHostController) {
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = Color.White
                 ),
+                navigationIcon = {
+                    if (currentRoute == Routes.CurrencyDetail || currentRoute == Routes.Settings) {
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon(
+                                Icons.AutoMirrored.Filled.ArrowBack,
+                                tint = Color.White,
+                                contentDescription = "Go Back"
+                            )
+                        }
+                    }
+                },
                 actions = {
-                    IconButton(onClick = { navController.navigate(Routes.Settings) }) {
-                        Icon(
-                            Icons.Filled.Settings,
-                            tint = Color.White,
-                            contentDescription = "Settings"
-                        )
+                    if (currentRoute != Routes.Settings) {
+                        IconButton(onClick = { navController.navigate(Routes.Settings) }) {
+                            Icon(
+                                Icons.Filled.Settings,
+                                tint = Color.White,
+                                contentDescription = "Settings"
+                            )
+                        }
                     }
                 }
             )
@@ -150,7 +170,7 @@ fun MainScreen(navController: NavHostController) {
             }
         }
     ) { innerPadding ->
-        // Navigation(navController = navController, innerPadding = innerPadding)
+        Navigation(navController = navController, innerPadding = innerPadding)
     }
 }
 
@@ -161,7 +181,7 @@ fun Navigation(navController: NavHostController, innerPadding: PaddingValues) {
         startDestination = Routes.CurrencyList,
         modifier = Modifier.padding(innerPadding)
     ) {
-
+        composable(Routes.CurrencyList) { CurrencyListScreen(navController) }
     }
 }
 

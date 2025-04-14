@@ -3,6 +3,7 @@ package cz.razor.currrate.repository
 import cz.razor.currrate.data.CurrencyInfo
 import cz.razor.currrate.data.CurrencyInfo_
 import io.objectbox.Box
+import io.objectbox.exception.UniqueViolationException
 
 class CurrencyInfoRepository(private val box: Box<CurrencyInfo>) {
 
@@ -13,7 +14,13 @@ class CurrencyInfoRepository(private val box: Box<CurrencyInfo>) {
                 name = name
             )
         }
-        box.put(entities)
+        entities.forEach {
+            try {
+                box.put(it)
+            } catch (e: UniqueViolationException) {
+                // Optional: handle duplicate or update existing record
+            }
+        }
     }
 
     fun getAll(): List<CurrencyInfo> = box.all

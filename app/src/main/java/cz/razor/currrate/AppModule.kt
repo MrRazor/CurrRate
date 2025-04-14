@@ -17,17 +17,20 @@ import cz.razor.currrate.helpers.NotificationSchedulerHelper
 import cz.razor.currrate.repository.CurrencyInfoRepository
 import cz.razor.currrate.repository.CurrencyRateRepository
 import cz.razor.currrate.repository.SettingsRepository
+import cz.razor.currrate.viewmodels.CurrencyViewModel
 import io.objectbox.BoxStore
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.module.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 val repositoryModule = module {
-    single { CurrencyInfoRepository(get()) }
-    single { CurrencyRateRepository(get()) }
+    single { CurrencyInfoRepository(get(named("currencyInfoBox"))) }
+    single { CurrencyRateRepository(get(named("currencyRateBox"))) }
     single<DataStore<Preferences>> {
         PreferenceDataStoreFactory.create(
             produceFile = { androidContext().preferencesDataStoreFile("settings") }
@@ -37,7 +40,7 @@ val repositoryModule = module {
 }
 
 val viewModelModule = module {
-
+    viewModel { CurrencyViewModel(get(), get(), get()) }
 }
 
 val imageModule = module {
@@ -47,7 +50,7 @@ val imageModule = module {
 val networkModule = module {
     single { provideOkHttpClient() }
     single { provideRetrofit(get()) }
-    single { provideCryptoApi(get()) }
+    single { provideFrankfurterApi(get()) }
 }
 
 val objectBoxModule = module {
@@ -56,8 +59,8 @@ val objectBoxModule = module {
             .androidContext(androidContext())
             .build()
     }
-    single { get<BoxStore>().boxFor(CurrencyInfo::class.java) }
-    single { get<BoxStore>().boxFor(CurrencyRate::class.java) }
+    single(named("currencyInfoBox")) { get<BoxStore>().boxFor(CurrencyInfo::class.java) }
+    single(named("currencyRateBox")) { get<BoxStore>().boxFor(CurrencyRate::class.java) }
 }
 
 val helperModule = module {
@@ -98,6 +101,6 @@ fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         .build()
 }
 
-fun provideCryptoApi(retrofit: Retrofit): FrankfurterApi {
+fun provideFrankfurterApi(retrofit: Retrofit): FrankfurterApi {
     return retrofit.create(FrankfurterApi::class.java)
 }
