@@ -29,7 +29,7 @@ import cz.razor.currrate.consts.Routes
 import cz.razor.currrate.data.CurrencyInfo
 import cz.razor.currrate.data.CurrencyRate
 import cz.razor.currrate.viewmodels.CurrencyListViewModel
-import cz.uhk.fim.cryptoapp.dialogs.DeleteCurrencyConfirmationDialog
+import cz.razor.currrate.dialogs.DeleteCurrencyConfirmationDialog
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

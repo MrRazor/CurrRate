@@ -43,6 +43,7 @@ import cz.razor.currrate.helpers.PermissionHelper
 import cz.razor.currrate.screens.CurrencyDetailScreen
 import cz.razor.currrate.screens.CurrencyListScreen
 import cz.razor.currrate.screens.FavouriteCurrencyListScreen
+import cz.razor.currrate.screens.SettingsScreen
 import cz.razor.currrate.theme.CurrRateAppTheme
 import org.koin.android.ext.android.inject
 import java.time.LocalDate
@@ -194,6 +195,7 @@ fun Navigation(navController: NavHostController, innerPadding: PaddingValues) {
             }
         }
         composable(Routes.FavouriteCurrencyList) { FavouriteCurrencyListScreen(navController) }
+        composable(Routes.Settings) { SettingsScreen() }
     }
 }
 

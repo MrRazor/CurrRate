@@ -1,4 +1,4 @@
-package cz.uhk.fim.cryptoapp.dialogs
+package cz.razor.currrate.dialogs
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

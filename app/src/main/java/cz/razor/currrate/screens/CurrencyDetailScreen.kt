@@ -30,7 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cz.razor.currrate.api.ApiResult
 import cz.razor.currrate.viewmodels.CurrencyDetailViewModel
-import cz.uhk.fim.cryptoapp.dialogs.DeleteCurrencyConfirmationDialog
+import cz.razor.currrate.dialogs.DeleteCurrencyConfirmationDialog
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 
