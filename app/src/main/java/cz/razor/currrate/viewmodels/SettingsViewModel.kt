@@ -47,10 +47,10 @@ class SettingsViewModel(private val frankfurterApi: FrankfurterApi, private val 
         }
     }
 
-    val preferredRateId: StateFlow<String?> = settingsRepository.getBaseCurrencyCode()
+    val baseCurrency: StateFlow<String> = settingsRepository.getBaseCurrencyCode()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "EUR")
 
-    fun savePreferredRateId(baseCurrencyCode: String) {
+    fun saveBaseCurrency(baseCurrencyCode: String) {
         viewModelScope.launch {
             settingsRepository.saveBaseCurrencyCode(baseCurrencyCode)
         }

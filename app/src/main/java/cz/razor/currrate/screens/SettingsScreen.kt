@@ -33,16 +33,16 @@ fun SettingsScreen(
     settingsViewModel: SettingsViewModel = koinViewModel()
 ) {
     val currencyCodeList by settingsViewModel.currencyCodeList.collectAsState()
-    val preferredRateId by settingsViewModel.preferredRateId.collectAsState()
+    val baseCurrency by settingsViewModel.baseCurrency.collectAsState()
 
 
-    var selectedRate by remember { mutableStateOf( "") }
+    var selectedBaseCurrency by remember { mutableStateOf( "EUR") }
     var showDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) { settingsViewModel.getCurrencyCodeList() }
 
-    LaunchedEffect(preferredRateId) {
-        selectedRate = preferredRateId ?: "EUR"
+    LaunchedEffect(baseCurrency) {
+        selectedBaseCurrency = baseCurrency
     }
 
     Column(modifier = Modifier.padding(16.dp)) {
@@ -52,7 +52,7 @@ fun SettingsScreen(
             }
 
             is ApiResult.Success -> {
-                val rateList = (currencyCodeList as ApiResult.Success<List<String>>).data
+                val currencyList = (currencyCodeList as ApiResult.Success<List<String>>).data
 
                 Column {
                     Spacer(modifier = Modifier.height(16.dp))
@@ -65,7 +65,7 @@ fun SettingsScreen(
                             contentColor = Color.Black
                         )
                     ) {
-                        Text(text = selectedRate)
+                        Text(text = selectedBaseCurrency)
                     }
                 }
 
@@ -79,12 +79,12 @@ fun SettingsScreen(
                             .sizeIn(maxWidth = 200.dp, maxHeight = 400.dp),
                         text = {
                             LazyColumn {
-                                items(rateList) { rate ->
+                                items(currencyList) { currency ->
                                     Text(
-                                        text = rate,
+                                        text = currency,
                                         modifier = Modifier
                                             .clickable {
-                                                selectedRate = rate
+                                                selectedBaseCurrency = currency
                                                 showDialog = false
                                             }
                                             .padding(8.dp)
@@ -102,7 +102,7 @@ fun SettingsScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(onClick = {
-                    settingsViewModel.savePreferredRateId(selectedRate)
+                    settingsViewModel.saveBaseCurrency(selectedBaseCurrency)
                 }) {
                     Text(text = "Save")
                 }

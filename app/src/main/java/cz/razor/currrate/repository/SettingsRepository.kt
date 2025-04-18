@@ -9,9 +9,9 @@ import kotlinx.coroutines.flow.map
 
 class SettingsRepository(private val dataStore: DataStore<Preferences>) {
 
-    fun getBaseCurrencyCode(): Flow<String?> {
+    fun getBaseCurrencyCode(): Flow<String> {
         return dataStore.data.map { preferences ->
-            preferences[SettingsKeys.BASE_CURRENCY_CODE]
+            preferences[SettingsKeys.BASE_CURRENCY_CODE] ?: "EUR"
         }
     }
 

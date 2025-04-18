@@ -42,7 +42,7 @@ val repositoryModule = module {
 }
 
 val viewModelModule = module {
-    viewModel { CurrencyListViewModel(get(), get(), get()) }
+    viewModel { CurrencyListViewModel(get(), get(), get(), get()) }
     viewModel { CurrencyDetailViewModel(get(), get(), get()) }
     viewModel { SettingsViewModel(get(), get(), get()) }
 }

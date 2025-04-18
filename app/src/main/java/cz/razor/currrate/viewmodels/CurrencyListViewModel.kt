@@ -9,12 +9,14 @@ import cz.razor.currrate.data.CurrencyInfo
 import cz.razor.currrate.data.CurrencyRate
 import cz.razor.currrate.repository.CurrencyInfoRepository
 import cz.razor.currrate.repository.CurrencyRateRepository
+import cz.razor.currrate.repository.SettingsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-class CurrencyListViewModel(private val frankfurterApi: FrankfurterApi, private val currencyRateRepository: CurrencyRateRepository, private val currencyInfoRepository: CurrencyInfoRepository):ViewModel() {
+class CurrencyListViewModel(private val frankfurterApi: FrankfurterApi, private val currencyRateRepository: CurrencyRateRepository, private val currencyInfoRepository: CurrencyInfoRepository, private val settingsRepository: SettingsRepository):ViewModel() {
     private val _currencyList = MutableStateFlow<ApiResult<List<CurrencyRate>>>(ApiResult.Loading)
     val currencyList: StateFlow<ApiResult<List<CurrencyRate>>> = _currencyList.asStateFlow()
 
@@ -25,13 +27,13 @@ class CurrencyListViewModel(private val frankfurterApi: FrankfurterApi, private 
         viewModelScope.launch {
             _currencyList.value = ApiResult.Loading
             try {
-                val baseCurrency = "EUR"
+                val baseCurrency = settingsRepository.getBaseCurrencyCode().first()
                 var currencyRateList = currencyRateRepository.getLatestRatesForBase(baseCurrency)
                 if (currencyRateList.isNotEmpty()) {
                     _currencyList.value = ApiResult.Success(currencyRateList)
                 }
                 else {
-                    val response = frankfurterApi.getRatesLatest()
+                    val response = frankfurterApi.getRatesLatest(baseCurrency)
                     if (response.isSuccessful) {
                         currencyRateRepository.saveSingleDayResponse(response.body()!!)
                         currencyRateList = currencyRateRepository.getLatestRatesForBase(baseCurrency)

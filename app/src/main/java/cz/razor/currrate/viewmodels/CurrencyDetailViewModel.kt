@@ -31,7 +31,7 @@ class CurrencyDetailViewModel(private val frankfurterApi: FrankfurterApi, privat
                     _currency.value = ApiResult.Success(currencyRate)
                 }
                 else {
-                    val response = frankfurterApi.getRatesForDay(date.toString())
+                    val response = frankfurterApi.getRatesForDay(date.toString(), base)
                     if (response.isSuccessful) {
                         currencyRateRepository.saveSingleDayResponse(response.body()!!)
                         currencyRate = currencyRateRepository.getRate(base, to, date)
