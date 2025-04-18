@@ -42,6 +42,7 @@ import cz.razor.currrate.helpers.NotificationSchedulerHelper
 import cz.razor.currrate.helpers.PermissionHelper
 import cz.razor.currrate.screens.CurrencyDetailScreen
 import cz.razor.currrate.screens.CurrencyListScreen
+import cz.razor.currrate.screens.FavouriteCurrencyListScreen
 import cz.razor.currrate.theme.CurrRateAppTheme
 import org.koin.android.ext.android.inject
 import java.time.LocalDate
@@ -192,6 +193,7 @@ fun Navigation(navController: NavHostController, innerPadding: PaddingValues) {
                 CurrencyDetailScreen(base, to, LocalDate.parse(date))
             }
         }
+        composable(Routes.FavouriteCurrencyList) { FavouriteCurrencyListScreen(navController) }
     }
 }
 

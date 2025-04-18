@@ -26,7 +26,7 @@ import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
-fun CurrencyListScreen(
+fun FavouriteCurrencyListScreen(
     navController: NavController,
     viewModel: CurrencyListViewModel = koinViewModel()
 ) {
@@ -57,7 +57,7 @@ fun CurrencyListScreen(
                     }
                     is ApiResult.Success -> {
                         val currencyDetailList = (currencyDetailList as ApiResult.Success).data
-                        val currencyList = (currencyList as ApiResult.Success).data
+                        val currencyList = (currencyList as ApiResult.Success).data.filter { currency -> currencyDetailList.find { currencyInfo -> (currencyInfo.code == currency.toCurrency) && currencyInfo.isToCurrencyFavourite } != null }
                         LazyColumn(state = listState) {
                             items(currencyList) { currency ->
                                 CurrencyItem(
