@@ -21,14 +21,14 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import cz.razor.currrate.api.ApiResult
 import cz.razor.currrate.items.CurrencyItem
-import cz.razor.currrate.viewmodels.CurrencyViewModel
+import cz.razor.currrate.viewmodels.CurrencyListViewModel
 import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
 fun CurrencyListScreen(
     navController: NavController,
-    viewModel: CurrencyViewModel = koinViewModel()
+    viewModel: CurrencyListViewModel = koinViewModel()
 ) {
     val listState = rememberLazyListState()
     val currencyList by viewModel.currencyList.collectAsState()

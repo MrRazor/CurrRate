@@ -29,7 +29,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cz.razor.currrate.api.ApiResult
-import cz.razor.currrate.viewmodels.CurrencyViewModel
+import cz.razor.currrate.viewmodels.CurrencyDetailViewModel
 import cz.uhk.fim.cryptoapp.dialogs.DeleteCurrencyConfirmationDialog
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
@@ -40,7 +40,7 @@ fun CurrencyDetailScreen(
     base: String,
     to: String,
     date: LocalDate,
-    viewModel: CurrencyViewModel = koinViewModel(),
+    viewModel: CurrencyDetailViewModel = koinViewModel(),
 ) {
     val currency by viewModel.currency.collectAsState()
     val currencyDetail by viewModel.currencyDetail.collectAsState()

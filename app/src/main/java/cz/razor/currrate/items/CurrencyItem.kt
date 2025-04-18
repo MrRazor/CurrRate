@@ -28,7 +28,7 @@ import androidx.navigation.NavController
 import cz.razor.currrate.consts.Routes
 import cz.razor.currrate.data.CurrencyInfo
 import cz.razor.currrate.data.CurrencyRate
-import cz.razor.currrate.viewmodels.CurrencyViewModel
+import cz.razor.currrate.viewmodels.CurrencyListViewModel
 import cz.uhk.fim.cryptoapp.dialogs.DeleteCurrencyConfirmationDialog
 import org.koin.androidx.compose.koinViewModel
 
@@ -36,7 +36,7 @@ import org.koin.androidx.compose.koinViewModel
 fun CurrencyItem(navController: NavController,
                  currencyRate: CurrencyRate,
                  currencyInfo: CurrencyInfo,
-                 viewModel: CurrencyViewModel = koinViewModel()) {
+                 viewModel: CurrencyListViewModel = koinViewModel()) {
     var showDeleteConfirmDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
