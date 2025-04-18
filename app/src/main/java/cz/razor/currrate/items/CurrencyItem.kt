@@ -45,7 +45,7 @@ fun CurrencyItem(navController: NavController,
             .fillMaxWidth()
             .padding(8.dp)
             .clickable {
-                navController.navigate(Routes.currencyDetail(currencyRate.baseCurrency, currencyRate.toCurrency, currencyRate.date))
+                navController.navigate(Routes.currencyDetail(currencyRate.toCurrency, currencyRate.date))
             },
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -54,7 +54,7 @@ fun CurrencyItem(navController: NavController,
             Text(text = "From: 1 ${currencyRate.baseCurrency}")
             Text(text = "Rate: ${currencyRate.rate} ${currencyRate.toCurrency}")
         }
-        IconButton(onClick = {  navController.navigate(Routes.currencyDetail(currencyRate.baseCurrency, currencyRate.toCurrency, currencyRate.date)) }) {
+        IconButton(onClick = {  navController.navigate(Routes.currencyDetail(currencyRate.toCurrency, currencyRate.date)) }) {
             Icon(Icons.Filled.Info, contentDescription = "Detail")
         }
         IconButton(onClick = {

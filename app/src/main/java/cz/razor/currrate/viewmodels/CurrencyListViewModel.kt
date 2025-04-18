@@ -16,7 +16,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-class CurrencyListViewModel(private val frankfurterApi: FrankfurterApi, private val currencyRateRepository: CurrencyRateRepository, private val currencyInfoRepository: CurrencyInfoRepository, private val settingsRepository: SettingsRepository):ViewModel() {
+class CurrencyListViewModel(private val frankfurterApi: FrankfurterApi,
+                            private val currencyRateRepository: CurrencyRateRepository,
+                            private val currencyInfoRepository: CurrencyInfoRepository,
+                            private val settingsRepository: SettingsRepository):ViewModel() {
     private val _currencyList = MutableStateFlow<ApiResult<List<CurrencyRate>>>(ApiResult.Loading)
     val currencyList: StateFlow<ApiResult<List<CurrencyRate>>> = _currencyList.asStateFlow()
 

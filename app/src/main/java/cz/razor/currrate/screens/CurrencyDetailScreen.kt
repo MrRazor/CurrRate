@@ -37,7 +37,6 @@ import java.time.LocalDate
 
 @Composable
 fun CurrencyDetailScreen(
-    base: String,
     to: String,
     date: LocalDate,
     viewModel: CurrencyDetailViewModel = koinViewModel(),
@@ -49,7 +48,7 @@ fun CurrencyDetailScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.getSingleCurrency(base, to, date)
+        viewModel.getSingleCurrency(to, date)
         viewModel.getSingleCurrencyDetail(to)
     }
 

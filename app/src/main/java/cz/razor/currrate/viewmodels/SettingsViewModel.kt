@@ -14,11 +14,22 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class SettingsViewModel(private val frankfurterApi: FrankfurterApi, private val currencyInfoRepository: CurrencyInfoRepository, private val settingsRepository: SettingsRepository) :
+class SettingsViewModel(private val frankfurterApi: FrankfurterApi,
+                        private val currencyInfoRepository: CurrencyInfoRepository,
+                        private val settingsRepository: SettingsRepository) :
     ViewModel() {
 
     private val _currencyCodeList = MutableStateFlow<ApiResult<List<String>>>(ApiResult.Loading)
     val currencyCodeList: StateFlow<ApiResult<List<String>>> = _currencyCodeList.asStateFlow()
+
+    val baseCurrency: StateFlow<String> = settingsRepository.getBaseCurrencyCode()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "EUR")
+
+    fun saveBaseCurrency(baseCurrencyCode: String) {
+        viewModelScope.launch {
+            settingsRepository.saveBaseCurrencyCode(baseCurrencyCode)
+        }
+    }
 
     fun getCurrencyCodeList() {
         viewModelScope.launch {
@@ -44,15 +55,6 @@ class SettingsViewModel(private val frankfurterApi: FrankfurterApi, private val 
                 _currencyCodeList.value = ApiResult.Error("Exception fetching currency code list: ${e.message}")
                 Log.e("SettingsViewModel", "Exception fetching currency code list: ${e.message}")
             }
-        }
-    }
-
-    val baseCurrency: StateFlow<String> = settingsRepository.getBaseCurrencyCode()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "EUR")
-
-    fun saveBaseCurrency(baseCurrencyCode: String) {
-        viewModelScope.launch {
-            settingsRepository.saveBaseCurrencyCode(baseCurrencyCode)
         }
     }
 

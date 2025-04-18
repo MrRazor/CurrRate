@@ -134,42 +134,44 @@ fun MainScreen(navController: NavHostController) {
             )
         },
         bottomBar = {
-            NavigationBar(
-                containerColor = MaterialTheme.colorScheme.primary,
-            ) {
-                items.forEachIndexed { index, item ->
-                    NavigationBarItem(
-                        icon = {
-                            Icon(
-                                item.icon,
-                                contentDescription = item.title
-                            )
-                        },
-                        label = { Text(item.title) },
-                        selected = selectedItem == index,
-                        onClick = {
-                            selectedItem = index
-                            navController.navigate(item.screenRoute) {
-                                navController.graph.startDestinationRoute?.let { screenRoute ->
-                                    popUpTo(screenRoute) {
-                                        saveState =
-                                            true
+            if(currentRoute != Routes.CurrencyDetail && currentRoute != Routes.Settings) {
+                NavigationBar(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                ) {
+                    items.forEachIndexed { index, item ->
+                        NavigationBarItem(
+                            icon = {
+                                Icon(
+                                    item.icon,
+                                    contentDescription = item.title
+                                )
+                            },
+                            label = { Text(item.title) },
+                            selected = selectedItem == index,
+                            onClick = {
+                                selectedItem = index
+                                navController.navigate(item.screenRoute) {
+                                    navController.graph.startDestinationRoute?.let { screenRoute ->
+                                        popUpTo(screenRoute) {
+                                            saveState =
+                                                true
+                                        }
                                     }
+                                    launchSingleTop =
+                                        true
+                                    restoreState =
+                                        true
                                 }
-                                launchSingleTop =
-                                    true
-                                restoreState =
-                                    true
-                            }
-                        },
-                        colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = Color.White,
-                            unselectedIconColor = Color.LightGray,
-                            selectedTextColor = Color.White,
-                            unselectedTextColor = Color.LightGray,
-                            indicatorColor = MaterialTheme.colorScheme.secondary
+                            },
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = Color.White,
+                                unselectedIconColor = Color.LightGray,
+                                selectedTextColor = Color.White,
+                                unselectedTextColor = Color.LightGray,
+                                indicatorColor = MaterialTheme.colorScheme.secondary
+                            )
                         )
-                    )
+                    }
                 }
             }
         }
@@ -187,11 +189,10 @@ fun Navigation(navController: NavHostController, innerPadding: PaddingValues) {
     ) {
         composable(Routes.CurrencyList) { CurrencyListScreen(navController) }
         composable(Routes.CurrencyDetail) { navBackStackEntry ->
-            val base = navBackStackEntry.arguments?.getString("base")
             val to = navBackStackEntry.arguments?.getString("to")
             val date = navBackStackEntry.arguments?.getString("date")
-            if (base != null && to != null && date != null) {
-                CurrencyDetailScreen(base, to, LocalDate.parse(date))
+            if (to != null && date != null) {
+                CurrencyDetailScreen(to, LocalDate.parse(date))
             }
         }
         composable(Routes.FavouriteCurrencyList) { FavouriteCurrencyListScreen(navController) }

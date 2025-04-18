@@ -9,32 +9,43 @@ import cz.razor.currrate.data.CurrencyInfo
 import cz.razor.currrate.data.CurrencyRate
 import cz.razor.currrate.repository.CurrencyInfoRepository
 import cz.razor.currrate.repository.CurrencyRateRepository
+import cz.razor.currrate.repository.SettingsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-class CurrencyDetailViewModel(private val frankfurterApi: FrankfurterApi, private val currencyRateRepository: CurrencyRateRepository, private val currencyInfoRepository: CurrencyInfoRepository):ViewModel() {
+class CurrencyDetailViewModel(private val frankfurterApi: FrankfurterApi,
+                              private val currencyRateRepository: CurrencyRateRepository,
+                              private val currencyInfoRepository: CurrencyInfoRepository,
+                              private val settingsRepository: SettingsRepository):ViewModel() {
     private val _currency = MutableStateFlow<ApiResult<CurrencyRate>>(ApiResult.Loading)
     val currency: StateFlow<ApiResult<CurrencyRate>> = _currency.asStateFlow()
 
     private val _currencyDetail = MutableStateFlow<ApiResult<CurrencyInfo>>(ApiResult.Loading)
     val currencyDetail: StateFlow<ApiResult<CurrencyInfo>> = _currencyDetail.asStateFlow()
 
-    fun getSingleCurrency(base: String, to: String, date: LocalDate) {
+    val baseCurrency: StateFlow<String> = settingsRepository.getBaseCurrencyCode()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "EUR")
+
+    fun getSingleCurrency(to: String, date: LocalDate) {
         viewModelScope.launch {
             _currency.value = ApiResult.Loading
             try {
-                var currencyRate = currencyRateRepository.getRate(base, to, date)
+                val baseCurrency = settingsRepository.getBaseCurrencyCode().first()
+                var currencyRate = currencyRateRepository.getRate(baseCurrency, to, date)
                 if (currencyRate != null) {
                     _currency.value = ApiResult.Success(currencyRate)
                 }
                 else {
-                    val response = frankfurterApi.getRatesForDay(date.toString(), base)
+                    val response = frankfurterApi.getRatesForDay(date.toString(), baseCurrency)
                     if (response.isSuccessful) {
                         currencyRateRepository.saveSingleDayResponse(response.body()!!)
-                        currencyRate = currencyRateRepository.getRate(base, to, date)
+                        currencyRate = currencyRateRepository.getRate(baseCurrency, to, date)
                         _currency.value = ApiResult.Success(currencyRate!!)
                     } else {
                         _currency.value = ApiResult.Error("Error fetching currency: ${response.message()}")
