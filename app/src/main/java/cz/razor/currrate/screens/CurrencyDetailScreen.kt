@@ -87,7 +87,7 @@ fun CurrencyDetailScreen(
                                 if(percentChange > BigDecimal.ZERO) {
                                     color = Color.Green
                                 }
-                                else {
+                                if(percentChange < BigDecimal.ZERO) {
                                     color = Color.Red
                                 }
                                 Row(
@@ -103,7 +103,7 @@ fun CurrencyDetailScreen(
                                         )
                                         Text(text = "From: 1 ${currency.baseCurrency}")
                                         Text(text = "Rate (${currency.date}): ${currency.rate} ${currency.toCurrency}")
-                                        Text(color = Color.Red, text = "Change: ${percentChange.toPlainString()} %")
+                                        Text(color = color, text = "Change: ${percentChange.toPlainString()} %")
                                         Spacer(modifier = Modifier.height(16.dp))
                                         Text(text = "Previous (${currencyYesterday.date}): ${currencyYesterday.rate} ${currencyYesterday.toCurrency}")
                                     }
