@@ -18,6 +18,7 @@ import cz.razor.currrate.repository.CurrencyInfoRepository
 import cz.razor.currrate.repository.CurrencyRateRepository
 import cz.razor.currrate.repository.SettingsRepository
 import cz.razor.currrate.viewmodels.CurrencyDetailViewModel
+import cz.razor.currrate.viewmodels.CurrencyGraphViewModel
 import cz.razor.currrate.viewmodels.CurrencyListViewModel
 import cz.razor.currrate.viewmodels.SettingsViewModel
 import io.objectbox.BoxStore
@@ -44,6 +45,7 @@ val repositoryModule = module {
 val viewModelModule = module {
     viewModel { CurrencyListViewModel(get(), get(), get(), get()) }
     viewModel { CurrencyDetailViewModel(get(), get(), get(), get()) }
+    viewModel { CurrencyGraphViewModel(get(), get(), get(), get()) }
     viewModel { SettingsViewModel(get(), get(), get()) }
 }
 
