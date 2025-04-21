@@ -13,7 +13,7 @@ class NotificationWorker(appContext: Context, workerParams: WorkerParameters) :
     private val notificationHelper: NotificationHelper by inject()
 
     override fun doWork(): Result {
-        notificationHelper.showNotification("CurrRate", "Nezapomeň zkontrolovat kurzy měn!")
+        notificationHelper.showNotification("CurrRate", "Currency rates are updated every working day (with some exceptions) around 16:00 CET")
 
         return Result.success()
     }

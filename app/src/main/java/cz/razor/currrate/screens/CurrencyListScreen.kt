@@ -69,7 +69,7 @@ fun CurrencyListScreen(
                         }
                     }
                     is ApiResult.Error -> {
-                        val errorMessage = (currencyList as ApiResult.Error).message
+                        val errorMessage = (currencyDetailList as ApiResult.Error).message
                         Text(text = "Error: $errorMessage")
                     }
                 }

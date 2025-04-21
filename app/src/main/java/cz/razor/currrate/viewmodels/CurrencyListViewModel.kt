@@ -15,6 +15,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.ZoneId
 
 class CurrencyListViewModel(private val frankfurterApi: FrankfurterApi,
                             private val currencyRateRepository: CurrencyRateRepository,
@@ -32,7 +34,7 @@ class CurrencyListViewModel(private val frankfurterApi: FrankfurterApi,
             try {
                 val baseCurrency = settingsRepository.getBaseCurrencyCode().first()
                 var currencyRateList = currencyRateRepository.getLatestRatesForBase(baseCurrency)
-                if (currencyRateList.isNotEmpty()) {
+                if (currencyRateList.isNotEmpty() && currencyRateList.get(0).date == LocalDate.now(ZoneId.of("CET"))) {
                     _currencyList.value = ApiResult.Success(currencyRateList)
                 }
                 else {

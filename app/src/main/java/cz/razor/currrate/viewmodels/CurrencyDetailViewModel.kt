@@ -26,6 +26,9 @@ class CurrencyDetailViewModel(private val frankfurterApi: FrankfurterApi,
     private val _currency = MutableStateFlow<ApiResult<CurrencyRate>>(ApiResult.Loading)
     val currency: StateFlow<ApiResult<CurrencyRate>> = _currency.asStateFlow()
 
+    private val _currencyYesterday = MutableStateFlow<ApiResult<CurrencyRate>>(ApiResult.Loading)
+    val currencyYesterday: StateFlow<ApiResult<CurrencyRate>> = _currencyYesterday.asStateFlow()
+
     private val _currencyDetail = MutableStateFlow<ApiResult<CurrencyInfo>>(ApiResult.Loading)
     val currencyDetail: StateFlow<ApiResult<CurrencyInfo>> = _currencyDetail.asStateFlow()
 
@@ -35,9 +38,12 @@ class CurrencyDetailViewModel(private val frankfurterApi: FrankfurterApi,
     fun getSingleCurrency(to: String, date: LocalDate) {
         viewModelScope.launch {
             _currency.value = ApiResult.Loading
+            _currencyYesterday.value = ApiResult.Loading
             try {
                 val baseCurrency = settingsRepository.getBaseCurrencyCode().first()
                 var currencyRate = currencyRateRepository.getRate(baseCurrency, to, date)
+                val yesterdayDate = date.minusDays(1)
+                var currencyRateYesterday = currencyRateRepository.getRate(baseCurrency, to, yesterdayDate)
                 if (currencyRate != null) {
                     _currency.value = ApiResult.Success(currencyRate)
                 }
@@ -52,9 +58,24 @@ class CurrencyDetailViewModel(private val frankfurterApi: FrankfurterApi,
                         Log.e("CurrencyDetailViewModel", "Error fetching currency: ${response.message()}")
                     }
                 }
+                if (currencyRateYesterday != null) {
+                    _currencyYesterday.value = ApiResult.Success(currencyRateYesterday)
+                }
+                else {
+                    val response = frankfurterApi.getRatesForDay(yesterdayDate.toString(), baseCurrency)
+                    if (response.isSuccessful) {
+                        currencyRateRepository.saveSingleDayResponse(response.body()!!)
+                        currencyRateYesterday = currencyRateRepository.getRate(baseCurrency, to, yesterdayDate)
+                        _currencyYesterday.value = ApiResult.Success(currencyRateYesterday!!)
+                    } else {
+                        _currencyYesterday.value = ApiResult.Error("Error fetching yesterday currency: ${response.message()}")
+                        Log.e("CurrencyDetailViewModel", "Error fetching yesterday currency: ${response.message()}")
+                    }
+                }
             } catch (e: Exception) {
                 _currency.value = ApiResult.Error("Exception fetching currency: ${e.message}")
-                Log.e("CurrencyDetailViewModel", "Exception fetching currency: ${e.message}")
+                _currencyYesterday.value = ApiResult.Error("Exception fetching yesterday currency: ${e.message}")
+                Log.e("CurrencyDetailViewModel", "Exception fetching (yesterday) currency: ${e.message}")
             }
         }
     }
