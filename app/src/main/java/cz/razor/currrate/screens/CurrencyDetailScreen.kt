@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,7 +30,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import cz.razor.currrate.api.ApiResult
+import cz.razor.currrate.consts.Routes
 import cz.razor.currrate.viewmodels.CurrencyDetailViewModel
 import cz.razor.currrate.dialogs.DeleteCurrencyConfirmationDialog
 import org.koin.androidx.compose.koinViewModel
@@ -39,6 +42,7 @@ import java.time.LocalDate
 
 @Composable
 fun CurrencyDetailScreen(
+    navController: NavController,
     to: String,
     date: LocalDate,
     viewModel: CurrencyDetailViewModel = koinViewModel(),
@@ -126,6 +130,13 @@ fun CurrencyDetailScreen(
                                             )
                                         }
                                     }
+                                }
+                                Button(
+                                    onClick = {
+                                        navController.navigate(Routes.currencyGraph(currency.toCurrency, currency.date))
+                                    }
+                                ) {
+                                    Text("Show Graph")
                                 }
                                 if (showDeleteConfirmDialog) {
                                     DeleteCurrencyConfirmationDialog(

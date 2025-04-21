@@ -41,6 +41,7 @@ import cz.razor.currrate.consts.Routes
 import cz.razor.currrate.helpers.NotificationSchedulerHelper
 import cz.razor.currrate.helpers.PermissionHelper
 import cz.razor.currrate.screens.CurrencyDetailScreen
+import cz.razor.currrate.screens.CurrencyGraphScreen
 import cz.razor.currrate.screens.CurrencyListScreen
 import cz.razor.currrate.screens.FavouriteCurrencyListScreen
 import cz.razor.currrate.screens.SettingsScreen
@@ -110,7 +111,7 @@ fun MainScreen(navController: NavHostController) {
                     titleContentColor = Color.White
                 ),
                 navigationIcon = {
-                    if (currentRoute == Routes.CurrencyDetail || currentRoute == Routes.Settings) {
+                    if (currentRoute == Routes.CurrencyDetail || currentRoute == Routes.CurrencyGraph || currentRoute == Routes.Settings) {
                         IconButton(onClick = { navController.popBackStack() }) {
                             Icon(
                                 Icons.AutoMirrored.Filled.ArrowBack,
@@ -134,7 +135,7 @@ fun MainScreen(navController: NavHostController) {
             )
         },
         bottomBar = {
-            if(currentRoute != Routes.CurrencyDetail && currentRoute != Routes.Settings) {
+            if(currentRoute != Routes.CurrencyDetail && currentRoute != Routes.CurrencyGraph && currentRoute != Routes.Settings) {
                 NavigationBar(
                     containerColor = MaterialTheme.colorScheme.primary,
                 ) {
@@ -192,7 +193,14 @@ fun Navigation(navController: NavHostController, innerPadding: PaddingValues) {
             val to = navBackStackEntry.arguments?.getString("to")
             val date = navBackStackEntry.arguments?.getString("date")
             if (to != null && date != null) {
-                CurrencyDetailScreen(to, LocalDate.parse(date))
+                CurrencyDetailScreen(navController, to, LocalDate.parse(date))
+            }
+        }
+        composable(Routes.CurrencyGraph) { navBackStackEntry ->
+            val to = navBackStackEntry.arguments?.getString("to")
+            val date = navBackStackEntry.arguments?.getString("date")
+            if (to != null && date != null) {
+                CurrencyGraphScreen(to, LocalDate.parse(date))
             }
         }
         composable(Routes.FavouriteCurrencyList) { FavouriteCurrencyListScreen(navController) }
