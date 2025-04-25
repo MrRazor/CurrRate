@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cz.razor.currrate.api.ApiResult
 import cz.razor.currrate.api.FrankfurterApi
+import cz.razor.currrate.consts.SettingsKeys
 import cz.razor.currrate.data.CurrencyInfo
 import cz.razor.currrate.data.CurrencyRate
 import cz.razor.currrate.repository.CurrencyInfoRepository
@@ -33,7 +34,7 @@ class CurrencyDetailViewModel(private val frankfurterApi: FrankfurterApi,
     val currencyDetail: StateFlow<ApiResult<CurrencyInfo>> = _currencyDetail.asStateFlow()
 
     val baseCurrency: StateFlow<String> = settingsRepository.getBaseCurrencyCode()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "EUR")
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SettingsKeys.DEFAULT_BASE_CURRENCY_CODE)
 
     fun getSingleCurrency(to: String, date: LocalDate) {
         viewModelScope.launch {

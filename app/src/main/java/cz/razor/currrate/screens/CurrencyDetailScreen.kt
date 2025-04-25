@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -107,11 +108,27 @@ fun CurrencyDetailScreen(
                                             text = currencyDetail.name,
                                             fontWeight = FontWeight.Bold
                                         )
-                                        Text(text = "From: 1 ${currency.baseCurrency}")
-                                        Text(text = "Rate (${currency.date}): ${currency.rate} ${currency.toCurrency}")
-                                        Text(color = color, text = "Change: ${percentChange.toPlainString()} %")
+                                        Text(text = stringResource(
+                                            R.string.from_1,
+                                            currency.baseCurrency
+                                        ))
+                                        Text(text = stringResource(
+                                            R.string.rate,
+                                            currency.date,
+                                            currency.rate,
+                                            currency.toCurrency
+                                        ))
+                                        Text(color = color, text = stringResource(
+                                            R.string.change,
+                                            percentChange.toPlainString()
+                                        ))
                                         Spacer(modifier = Modifier.height(16.dp))
-                                        Text(text = "Previous (${currencyYesterday.date}): ${currencyYesterday.rate} ${currencyYesterday.toCurrency}")
+                                        Text(text = stringResource(
+                                            R.string.previous,
+                                            currencyYesterday.date,
+                                            currencyYesterday.rate,
+                                            currencyYesterday.toCurrency
+                                        ))
                                     }
                                     IconButton(onClick = {
                                         if (!currencyDetail.isToCurrencyFavourite) {
@@ -123,12 +140,12 @@ fun CurrencyDetailScreen(
                                         if (currencyDetail.isToCurrencyFavourite) {
                                             Icon(
                                                 Icons.Filled.Favorite,
-                                                contentDescription = "Remove from Favorites"
+                                                contentDescription = stringResource(R.string.remove_from_favorites)
                                             )
                                         } else {
                                             Icon(
                                                 Icons.Filled.FavoriteBorder,
-                                                contentDescription = "Add to Favorites"
+                                                contentDescription = stringResource(R.string.add_to_favorites)
                                             )
                                         }
                                     }
@@ -145,7 +162,7 @@ fun CurrencyDetailScreen(
                                             navController.navigate(Routes.currencyGraph(currency.toCurrency, currency.date))
                                         }
                                     ) {
-                                        Text("Show Graph")
+                                        Text(stringResource(R.string.show_graph))
                                     }
                                 }
 
@@ -160,7 +177,7 @@ fun CurrencyDetailScreen(
                                             showDeleteConfirmDialog = false
                                             Toast.makeText(
                                                 context,
-                                                "User canceled the deletion",
+                                                context.getString(R.string.user_canceled_the_deletion),
                                                 Toast.LENGTH_SHORT
                                             ).show();
                                         })
@@ -168,19 +185,19 @@ fun CurrencyDetailScreen(
                             }
                             is ApiResult.Error -> {
                                 val errorMessage = (currencyDetail as ApiResult.Error).message
-                                Text(text = "Error: $errorMessage", color = MaterialTheme.colorScheme.onError)
+                                Text(text = stringResource(R.string.error, errorMessage), color = MaterialTheme.colorScheme.onError)
                             }
                         }
                     }
                     is ApiResult.Error -> {
                         val errorMessage = (currencyYesterday as ApiResult.Error).message
-                        Text(text = "Error: $errorMessage", color = MaterialTheme.colorScheme.onError)
+                        Text(text = stringResource(R.string.error, errorMessage), color = MaterialTheme.colorScheme.onError)
                     }
                 }
             }
             is ApiResult.Error -> {
                 val errorMessage = (currency as ApiResult.Error).message
-                Text(text = "Error: $errorMessage", color = MaterialTheme.colorScheme.onError)
+                Text(text = stringResource(R.string.error, errorMessage), color = MaterialTheme.colorScheme.onError)
             }
         }
     }

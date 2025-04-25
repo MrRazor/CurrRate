@@ -28,9 +28,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import cz.razor.currrate.R
 import cz.razor.currrate.api.ApiResult
+import cz.razor.currrate.consts.SettingsKeys
 import cz.razor.currrate.viewmodels.SettingsViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -42,7 +45,7 @@ fun SettingsScreen(
     val currencyCodeList by settingsViewModel.currencyCodeList.collectAsState()
     val baseCurrency by settingsViewModel.baseCurrency.collectAsState()
 
-    var selectedBaseCurrency by remember { mutableStateOf("EUR") }
+    var selectedBaseCurrency by remember { mutableStateOf(SettingsKeys.DEFAULT_BASE_CURRENCY_CODE) }
     var showDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) { settingsViewModel.getCurrencyCodeList() }
@@ -56,14 +59,14 @@ fun SettingsScreen(
     ) {
         when (currencyCodeList) {
             is ApiResult.Loading -> {
-                Text(text = "Loading Currencies...")
+                Text(text = stringResource(R.string.loading_currencies))
             }
 
             is ApiResult.Success -> {
                 val currencyList = (currencyCodeList as ApiResult.Success<List<String>>).data
 
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = "Base Currency")
+                    Text(text = stringResource(R.string.base_currency))
 
                     Spacer(modifier = Modifier.height(16.dp))
 
@@ -83,7 +86,7 @@ fun SettingsScreen(
                             onDismissRequest = { showDialog = false },
                             title = {
                                 Text(
-                                    "Select Currency",
+                                    stringResource(R.string.select_currency),
                                     modifier = Modifier.fillMaxWidth(),
                                     textAlign = TextAlign.Center
                                 )
@@ -117,7 +120,7 @@ fun SettingsScreen(
                                     Spacer(modifier = Modifier.height(16.dp))
 
                                     Button(onClick = { showDialog = false }) {
-                                        Text("Close")
+                                        Text(stringResource(R.string.close))
                                     }
                                 }
                             },
@@ -130,14 +133,14 @@ fun SettingsScreen(
                     Button(onClick = {
                         settingsViewModel.saveBaseCurrency(selectedBaseCurrency)
                     }) {
-                        Text(text = "Save")
+                        Text(text = stringResource(R.string.save))
                     }
                 }
             }
 
             is ApiResult.Error -> {
                 val errorMessage = (currencyCodeList as ApiResult.Error).message
-                Text(text = "Error Loading Currencies: $errorMessage", color = MaterialTheme.colorScheme.onError)
+                Text(text = stringResource(R.string.error, errorMessage), color = MaterialTheme.colorScheme.onError)
             }
         }
     }

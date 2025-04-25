@@ -16,8 +16,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import cz.razor.currrate.R
 import cz.razor.currrate.api.ApiResult
 import cz.razor.currrate.items.CurrencyItem
 import cz.razor.currrate.viewmodels.CurrencyListViewModel
@@ -68,14 +70,14 @@ fun FavouriteCurrencyListScreen(
                     }
                     is ApiResult.Error -> {
                         val errorMessage = (currencyDetailList as ApiResult.Error).message
-                        Text(text = "Error: $errorMessage", color = MaterialTheme.colorScheme.onError)
+                        Text(text = stringResource(R.string.error, errorMessage), color = MaterialTheme.colorScheme.onError)
                     }
                 }
             }
 
             is ApiResult.Error -> {
                 val errorMessage = (currencyList as ApiResult.Error).message
-                Text(text = "Error: $errorMessage", color = MaterialTheme.colorScheme.onError)
+                Text(text = stringResource(R.string.error, errorMessage), color = MaterialTheme.colorScheme.onError)
             }
         }
     }

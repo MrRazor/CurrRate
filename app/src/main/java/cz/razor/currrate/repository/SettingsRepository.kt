@@ -11,7 +11,7 @@ class SettingsRepository(private val dataStore: DataStore<Preferences>) {
 
     fun getBaseCurrencyCode(): Flow<String> {
         return dataStore.data.map { preferences ->
-            preferences[SettingsKeys.BASE_CURRENCY_CODE] ?: "EUR"
+            preferences[SettingsKeys.BASE_CURRENCY_CODE] ?: SettingsKeys.DEFAULT_BASE_CURRENCY_CODE
         }
     }
 

@@ -1,10 +1,24 @@
 <resources>
     <string name="app_name">CurrRate</string>
-    <string name="no_favourite_currency">No favourite crypto yet.</string>
-    <string name="delete_confirmation_title">Delete from favourites</string>
-    <string name="delete_confirmation_message">Do you really want to delete %s from favourites?</string>
-    <string name="entry_currency_name_label">Enter name of currency</string>
-    <string name="i_know_what_i_am_doing_label">Yes, I know what I am doing</string>
+    <string name="delete_confirmation_title">Delete from Favourites</string>
+    <string name="delete_confirmation_message">Do you really want to delete %s from Favourites?</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_remove">Remove</string>
+    <string name="from_1">From: 1 %1$s</string>
+    <string name="rate">Rate (%1$s): %2$s %3$s</string>
+    <string name="change">Change: %1$s %</string>
+    <string name="previous">Previous (%1$s): %2$s %3$s</string>
+    <string name="remove_from_favorites">Remove from Favorites</string>
+    <string name="add_to_favorites">Add to Favorites</string>
+    <string name="show_graph">Show Graph</string>
+    <string name="user_canceled_the_deletion">User canceled deletion from Favourites</string>
+    <string name="error">Error: %1$s</string>
+    <string name="currency_rate">Currency Rate</string>
+    <string name="rate_conversion">Rate: %1$s → %2$s</string>
+    <string name="graph_label">%1$s - %2$s %3$s</string>
+    <string name="loading_currencies">Loading Currencies…</string>
+    <string name="base_currency">Base Currency</string>
+    <string name="select_currency">Select Currency</string>
+    <string name="close">Close</string>
+    <string name="save">Save</string>
 </resources>

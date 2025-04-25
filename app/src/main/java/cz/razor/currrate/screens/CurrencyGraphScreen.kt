@@ -13,7 +13,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import cz.razor.currrate.R
 import cz.razor.currrate.api.ApiResult
 import cz.razor.currrate.data.CurrencyRate
 import cz.razor.currrate.viewmodels.CurrencyGraphViewModel
@@ -51,12 +53,23 @@ fun CurrencyGraphScreen(
                     .sortedBy { it.date }
 
                 val rateValues = currencyRates.map { it.rate }
-                val labels = currencyRates.map {"${it.date} - ${it.rate} ${it.toCurrency}"}
+                val labels = currencyRates.map {
+                    stringResource(
+                        R.string.graph_label,
+                        it.date,
+                        it.rate,
+                        it.toCurrency
+                    )
+                }
 
-                val dataSet = rateValues.toChartDataSet(title = "Currency Rate", labels = labels)
+                val dataSet = rateValues.toChartDataSet(title = stringResource(R.string.currency_rate), labels = labels)
 
                 Text(
-                    text = "Rate: ${currencyRates.first().baseCurrency} → ${currencyRates.first().toCurrency}",
+                    text = stringResource(
+                        R.string.rate_conversion,
+                        currencyRates.first().baseCurrency,
+                        currencyRates.first().toCurrency
+                    ),
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
@@ -66,7 +79,7 @@ fun CurrencyGraphScreen(
 
             is ApiResult.Error -> {
                 val errorMessage = (currencyListResult as ApiResult.Error).message
-                Text(text = "Error: $errorMessage", color = MaterialTheme.colorScheme.onError)
+                Text(text = stringResource(R.string.error, errorMessage), color = MaterialTheme.colorScheme.onError)
             }
         }
     }
