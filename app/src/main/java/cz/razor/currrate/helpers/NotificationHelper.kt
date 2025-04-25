@@ -27,8 +27,8 @@ class NotificationHelper(private val context: Context) {
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "Currency Notifications"
-            val descriptionText = "Notifications about currency rates"
+            val name = context.getString(R.string.currency_notifications)
+            val descriptionText = context.getString(R.string.notifications_about_currency_rates)
             val importance = NotificationManager.IMPORTANCE_DEFAULT
 
             val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {

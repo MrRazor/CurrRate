@@ -28,6 +28,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import android.widget.Toast
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import cz.razor.currrate.consts.BottomNavItem
@@ -64,9 +65,11 @@ class MainActivity : ComponentActivity() {
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
         if (isGranted) {
-            Toast.makeText(this, "Notification permission granted", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,
+                getString(R.string.notification_permission_granted), Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(this, "Notification permission denied", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,
+                getString(R.string.notification_permission_denied), Toast.LENGTH_SHORT).show()
         }
     }
 }
@@ -88,13 +91,13 @@ fun MainScreen(navController: NavHostController) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Currency Rates App") },
+                title = { Text(stringResource(R.string.currency_rates_app)) },
                 navigationIcon = {
                     if (currentRoute == Routes.CurrencyDetail || currentRoute == Routes.CurrencyGraph || currentRoute == Routes.Settings) {
                         IconButton(onClick = { navController.popBackStack() }) {
                             Icon(
                                 Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Go Back"
+                                contentDescription = stringResource(R.string.go_back)
                             )
                         }
                     }
@@ -104,7 +107,7 @@ fun MainScreen(navController: NavHostController) {
                         IconButton(onClick = { navController.navigate(Routes.Settings) }) {
                             Icon(
                                 Icons.Filled.Settings,
-                                contentDescription = "Settings"
+                                contentDescription = stringResource(R.string.settings)
                             )
                         }
                     }
