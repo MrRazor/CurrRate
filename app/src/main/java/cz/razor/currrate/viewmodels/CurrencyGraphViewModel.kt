@@ -62,7 +62,7 @@ class CurrencyGraphViewModel(private val frankfurterApi: FrankfurterApi,
         if (currencyRate != null) {
             currencyRates.add(currencyRate)
         } else {
-            val response = frankfurterApi.getRatesForDay(date.minusDays(minusDaysAfterSkippedDays).toString(), baseCurrency)
+            val response = frankfurterApi.getRatesForDay(date.minusDays(minusDaysAfterSkippedDays).toString(), baseCurrency, to)
             if (response.isSuccessful) {
                 currencyRateRepository.saveSingleDayResponse(response.body()!!)
                 currencyRate = currencyRateRepository.getRate(baseCurrency, to, date.minusDays(minusDaysAfterSkippedDays))
