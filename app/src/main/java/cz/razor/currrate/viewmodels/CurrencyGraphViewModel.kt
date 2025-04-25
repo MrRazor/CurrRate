@@ -33,7 +33,6 @@ class CurrencyGraphViewModel(private val frankfurterApi: FrankfurterApi,
     fun getCurrencyList(to: String, date: LocalDate) {
         viewModelScope.launch {
             _currencyList.value = ApiResult.Loading
-            skippedDays = 0L
             try {
                 val baseCurrency = settingsRepository.getBaseCurrencyCode().first()
                 val currencyRates = ArrayList<CurrencyRate>()
