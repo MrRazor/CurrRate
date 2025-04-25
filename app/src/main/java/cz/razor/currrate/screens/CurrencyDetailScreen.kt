@@ -1,6 +1,7 @@
 package cz.razor.currrate.screens
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -60,7 +61,6 @@ fun CurrencyDetailScreen(
     }
 
     Column(modifier = Modifier.padding(16.dp)) {
-        Spacer(modifier = Modifier.height(16.dp))
         when (currency) {
             is ApiResult.Loading -> {
                 Box(modifier = Modifier.fillMaxSize()) {
@@ -131,13 +131,22 @@ fun CurrencyDetailScreen(
                                         }
                                     }
                                 }
-                                Button(
-                                    onClick = {
-                                        navController.navigate(Routes.currencyGraph(currency.toCurrency, currency.date))
-                                    }
+
+                                Spacer(modifier = Modifier.height(16.dp))
+
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.Center
                                 ) {
-                                    Text("Show Graph")
+                                    Button(
+                                        onClick = {
+                                            navController.navigate(Routes.currencyGraph(currency.toCurrency, currency.date))
+                                        }
+                                    ) {
+                                        Text("Show Graph")
+                                    }
                                 }
+
                                 if (showDeleteConfirmDialog) {
                                     DeleteCurrencyConfirmationDialog(
                                         currencyDetail.code,
