@@ -23,7 +23,7 @@
     <string name="save">Save</string>
     <string name="currency_notifications">Currency Notifications</string>
     <string name="notifications_about_currency_rates">Notifications about Currency Rates</string>
-    <string name="currency_rates_update_notification">Currency rates are updated every working day (with some exceptions) around 16:00 CET</string>
+    <string name="currency_rates_update_notification">Currency Rates are updated every working day (with some exceptions) around 16:00 CET</string>
     <string name="notification_permission_granted">Notification Permission granted</string>
     <string name="notification_permission_denied">Notification Permission denied</string>
     <string name="currency_rates_app">Currency Rates App</string>
