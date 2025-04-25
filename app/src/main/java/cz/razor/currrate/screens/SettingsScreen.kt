@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -71,7 +72,7 @@ fun SettingsScreen(
                         modifier = Modifier.background(Color.Transparent),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.Transparent,
-                            contentColor = Color.Black
+                            contentColor = MaterialTheme.colorScheme.onBackground
                         )
                     ) {
                         Text(text = selectedBaseCurrency)
@@ -135,7 +136,8 @@ fun SettingsScreen(
             }
 
             is ApiResult.Error -> {
-                Text(text = "Error Loading Currencies: ${(currencyCodeList as ApiResult.Error).message}")
+                val errorMessage = (currencyCodeList as ApiResult.Error).message
+                Text(text = "Error Loading Currencies: $errorMessage", color = MaterialTheme.colorScheme.onError)
             }
         }
     }

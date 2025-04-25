@@ -13,7 +13,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import cz.razor.currrate.api.ApiResult
 import cz.razor.currrate.data.CurrencyRate
@@ -66,8 +65,8 @@ fun CurrencyGraphScreen(
             }
 
             is ApiResult.Error -> {
-                val message = (currencyListResult as ApiResult.Error).message
-                Text(text = "Error: $message", color = Color.Red)
+                val errorMessage = (currencyListResult as ApiResult.Error).message
+                Text(text = "Error: $errorMessage", color = MaterialTheme.colorScheme.onError)
             }
         }
     }

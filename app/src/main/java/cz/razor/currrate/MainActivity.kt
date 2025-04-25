@@ -11,27 +11,21 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.startKoin
 import android.widget.Toast
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.navigation.compose.composable
@@ -52,17 +46,6 @@ import java.time.LocalDate
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        startKoin {
-            androidContext(this@MainActivity)
-            modules(
-                repositoryModule,
-                viewModelModule,
-                networkModule,
-                objectBoxModule,
-                imageModule,
-                helperModule
-            )
-        }
         setContent {
             CurrRateAppTheme {
                 val navController = rememberNavController()
@@ -106,16 +89,11 @@ fun MainScreen(navController: NavHostController) {
         topBar = {
             TopAppBar(
                 title = { Text("Currency Rates App") },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = Color.White
-                ),
                 navigationIcon = {
                     if (currentRoute == Routes.CurrencyDetail || currentRoute == Routes.CurrencyGraph || currentRoute == Routes.Settings) {
                         IconButton(onClick = { navController.popBackStack() }) {
                             Icon(
                                 Icons.AutoMirrored.Filled.ArrowBack,
-                                tint = Color.White,
                                 contentDescription = "Go Back"
                             )
                         }
@@ -126,7 +104,6 @@ fun MainScreen(navController: NavHostController) {
                         IconButton(onClick = { navController.navigate(Routes.Settings) }) {
                             Icon(
                                 Icons.Filled.Settings,
-                                tint = Color.White,
                                 contentDescription = "Settings"
                             )
                         }
@@ -136,9 +113,7 @@ fun MainScreen(navController: NavHostController) {
         },
         bottomBar = {
             if(currentRoute != Routes.CurrencyDetail && currentRoute != Routes.CurrencyGraph && currentRoute != Routes.Settings) {
-                NavigationBar(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                ) {
+                NavigationBar {
                     items.forEachIndexed { index, item ->
                         NavigationBarItem(
                             icon = {
@@ -163,14 +138,7 @@ fun MainScreen(navController: NavHostController) {
                                     restoreState =
                                         true
                                 }
-                            },
-                            colors = NavigationBarItemDefaults.colors(
-                                selectedIconColor = Color.White,
-                                unselectedIconColor = Color.LightGray,
-                                selectedTextColor = Color.White,
-                                unselectedTextColor = Color.LightGray,
-                                indicatorColor = MaterialTheme.colorScheme.secondary
-                            )
+                            }
                         )
                     }
                 }
@@ -214,5 +182,4 @@ fun MainScreenPreview() {
     CurrRateAppTheme {
         MainScreen(rememberNavController())
     }
-
 }

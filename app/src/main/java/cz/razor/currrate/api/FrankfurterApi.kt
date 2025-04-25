@@ -1,6 +1,5 @@
 package cz.razor.currrate.api
 
-import cz.razor.currrate.data.ExchangeRatesPeriodResponse
 import cz.razor.currrate.data.ExchangeRatesSingleDayResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -21,14 +20,6 @@ interface FrankfurterApi {
         @Query("base") base: String? = null,
         @Query("symbols") symbols: String? = null
     ): Response<ExchangeRatesSingleDayResponse>
-
-    @GET("v1/{startDate}..{endDate}")
-    suspend fun getRatesForPeriod(
-        @Path("startDate") startDate: String,
-        @Path("endDate") endDate: String,
-        @Query("base") base: String? = null,
-        @Query("symbols") symbols: String? = null
-    ): Response<ExchangeRatesPeriodResponse>
 
     @GET("v1/currencies")
     suspend fun getCurrencies(): Response<Map<String, String>>
