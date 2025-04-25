@@ -1,6 +1,6 @@
 buildscript {
     dependencies {
-        classpath("io.objectbox:objectbox-gradle-plugin:4.2.0")
+        classpath(libs.objectbox.gradle.plugin)
     }
 }
 

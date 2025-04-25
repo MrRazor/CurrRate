@@ -72,11 +72,11 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
 
-    implementation("io.objectbox:objectbox-android:4.2.0")
+    implementation(libs.objectbox.android)
 
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
-    implementation("io.coil-kt:coil-compose:2.5.0")
-    implementation("androidx.work:work-runtime-ktx:2.10.0")
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.coil.compose)
+    implementation(libs.androidx.work.runtime.ktx)
 
-    implementation("io.github.dautovicharis:charts:2.0.0")
+    implementation(libs.charts.android)
 }
