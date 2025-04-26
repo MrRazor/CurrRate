@@ -14,8 +14,8 @@
     <string name="user_canceled_the_deletion">User canceled deletion from Favourites</string>
     <string name="error">Error: %1$s</string>
     <string name="currency_rate">Currency Rate</string>
-    <string name="rate_conversion">Rate: %1$s → %2$s</string>
-    <string name="graph_label">%1$s - %2$s %3$s</string>
+    <string name="rate_conversion">Rate: %1$s -> %2$s</string>
+    <string name="graph_label">%1$s · %2$s %3$s</string>
     <string name="loading_currencies">Loading Currencies…</string>
     <string name="base_currency">Base Currency</string>
     <string name="select_currency">Select Currency</string>
