@@ -3,7 +3,6 @@ package cz.razor.currrate
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -26,7 +25,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import android.widget.Toast
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.composable
@@ -61,17 +59,7 @@ class MainActivity : ComponentActivity() {
         notificationSchedulerHelper.scheduleNotificationWorker()
     }
 
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-            Toast.makeText(this,
-                getString(R.string.notification_permission_granted), Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this,
-                getString(R.string.notification_permission_denied), Toast.LENGTH_SHORT).show()
-        }
-    }
+    private val permissionHelper = PermissionHelper(this)
 }
 
 

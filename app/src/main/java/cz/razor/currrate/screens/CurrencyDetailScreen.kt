@@ -185,19 +185,19 @@ fun CurrencyDetailScreen(
                             }
                             is ApiResult.Error -> {
                                 val errorMessage = (currencyDetail as ApiResult.Error).message
-                                Text(text = stringResource(R.string.error, errorMessage), color = MaterialTheme.colorScheme.onError)
+                                Text(text = stringResource(R.string.error, errorMessage))
                             }
                         }
                     }
                     is ApiResult.Error -> {
                         val errorMessage = (currencyYesterday as ApiResult.Error).message
-                        Text(text = stringResource(R.string.error, errorMessage), color = MaterialTheme.colorScheme.onError)
+                        Text(text = stringResource(R.string.error, errorMessage))
                     }
                 }
             }
             is ApiResult.Error -> {
                 val errorMessage = (currency as ApiResult.Error).message
-                Text(text = stringResource(R.string.error, errorMessage), color = MaterialTheme.colorScheme.onError)
+                Text(text = stringResource(R.string.error, errorMessage))
             }
         }
     }

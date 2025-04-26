@@ -7,6 +7,7 @@ import cz.razor.currrate.api.ApiResult
 import cz.razor.currrate.api.FrankfurterApi
 import cz.razor.currrate.data.CurrencyInfo
 import cz.razor.currrate.data.CurrencyRate
+import cz.razor.currrate.helpers.NetworkMonitorHelper
 import cz.razor.currrate.repository.CurrencyInfoRepository
 import cz.razor.currrate.repository.CurrencyRateRepository
 import cz.razor.currrate.repository.SettingsRepository
@@ -21,7 +22,8 @@ import java.time.ZoneId
 class CurrencyListViewModel(private val frankfurterApi: FrankfurterApi,
                             private val currencyRateRepository: CurrencyRateRepository,
                             private val currencyInfoRepository: CurrencyInfoRepository,
-                            private val settingsRepository: SettingsRepository):ViewModel() {
+                            private val settingsRepository: SettingsRepository,
+                            private val networkMonitorHelper: NetworkMonitorHelper):ViewModel() {
     private val _currencyList = MutableStateFlow<ApiResult<List<CurrencyRate>>>(ApiResult.Loading)
     val currencyList: StateFlow<ApiResult<List<CurrencyRate>>> = _currencyList.asStateFlow()
 
@@ -34,7 +36,7 @@ class CurrencyListViewModel(private val frankfurterApi: FrankfurterApi,
             try {
                 val baseCurrency = settingsRepository.getBaseCurrencyCode().first()
                 var currencyRateList = currencyRateRepository.getLatestRatesForBase(baseCurrency)
-                if (currencyRateList.isNotEmpty() && currencyRateList.get(0).date == LocalDate.now(ZoneId.of("CET"))) {
+                if (currencyRateList.isNotEmpty() && (currencyRateList[0].date == LocalDate.now(ZoneId.of("CET")) || !networkMonitorHelper.isOnline.first())) {
                     _currencyList.value = ApiResult.Success(currencyRateList)
                 }
                 else {

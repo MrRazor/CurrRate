@@ -8,7 +8,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -58,6 +57,9 @@ fun CurrencyListScreen(
                     is ApiResult.Success -> {
                         val currencyDetailList = (currencyDetailList as ApiResult.Success).data
                         val currencyList = (currencyList as ApiResult.Success).data
+                        if (currencyList.isNotEmpty()) {
+                            Text(text = stringResource(R.string.for_date, currencyList[0].date))
+                        }
                         LazyColumn(state = listState) {
                             items(currencyList) { currency ->
                                 CurrencyItem(
@@ -70,14 +72,14 @@ fun CurrencyListScreen(
                     }
                     is ApiResult.Error -> {
                         val errorMessage = (currencyDetailList as ApiResult.Error).message
-                        Text(text = stringResource(R.string.error, errorMessage), color = MaterialTheme.colorScheme.onError)
+                        Text(text = stringResource(R.string.error, errorMessage))
                     }
                 }
             }
 
             is ApiResult.Error -> {
                 val errorMessage = (currencyList as ApiResult.Error).message
-                Text(text = stringResource(R.string.error, errorMessage), color = MaterialTheme.colorScheme.onError)
+                Text(text = stringResource(R.string.error, errorMessage))
             }
         }
     }

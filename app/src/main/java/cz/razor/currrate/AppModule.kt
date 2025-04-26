@@ -12,6 +12,7 @@ import cz.razor.currrate.api.FrankfurterApi
 import cz.razor.currrate.data.CurrencyInfo
 import cz.razor.currrate.data.CurrencyRate
 import cz.razor.currrate.data.MyObjectBox
+import cz.razor.currrate.helpers.NetworkMonitorHelper
 import cz.razor.currrate.helpers.NotificationHelper
 import cz.razor.currrate.helpers.NotificationSchedulerHelper
 import cz.razor.currrate.repository.CurrencyInfoRepository
@@ -43,7 +44,7 @@ val repositoryModule = module {
 }
 
 val viewModelModule = module {
-    viewModel { CurrencyListViewModel(get(), get(), get(), get()) }
+    viewModel { CurrencyListViewModel(get(), get(), get(), get(), get()) }
     viewModel { CurrencyDetailViewModel(get(), get(), get(), get()) }
     viewModel { CurrencyGraphViewModel(get(), get(), get()) }
     viewModel { SettingsViewModel(get(), get(), get()) }
@@ -72,6 +73,7 @@ val objectBoxModule = module {
 val helperModule = module {
     single { NotificationHelper(androidContext()) }
     single { NotificationSchedulerHelper(androidContext()) }
+    single { NetworkMonitorHelper(androidContext()) }
 }
 
 fun provideImageLoader(androidContext: Context): ImageLoader {

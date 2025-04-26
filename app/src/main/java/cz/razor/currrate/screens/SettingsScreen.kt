@@ -140,7 +140,7 @@ fun SettingsScreen(
 
             is ApiResult.Error -> {
                 val errorMessage = (currencyCodeList as ApiResult.Error).message
-                Text(text = stringResource(R.string.error, errorMessage), color = MaterialTheme.colorScheme.onError)
+                Text(text = stringResource(R.string.error, errorMessage))
             }
         }
     }
