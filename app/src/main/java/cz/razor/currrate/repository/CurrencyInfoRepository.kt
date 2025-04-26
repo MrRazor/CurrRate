@@ -27,18 +27,9 @@ class CurrencyInfoRepository(private val box: Box<CurrencyInfo>) {
         box.put(currencyInfo)
     }
 
-    fun getAllFavourites(): List<CurrencyInfo> =
-        box.query(CurrencyInfo_.isToCurrencyFavourite.equal(true)).build().find()
-
     fun getAll(): List<CurrencyInfo> = box.all
     fun getAllCodes(): List<String> = box.all.map {currencyInfo -> currencyInfo.code}
 
     fun getByCode(code: String): CurrencyInfo? =
         box.query(CurrencyInfo_.code.equal(code)).build().findFirst()
-
-    fun getById(id: Long): CurrencyInfo? {
-        return box.query(CurrencyInfo_.id.equal(id))
-            .build()
-            .findFirst()
-    }
 }
