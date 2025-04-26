@@ -69,14 +69,14 @@ class CurrencyDetailViewModel(private val frankfurterApi: FrankfurterApi,
                         currencyRateYesterday = currencyRateRepository.getRate(baseCurrency, to, yesterdayDate)
                         _currencyYesterday.value = ApiResult.Success(currencyRateYesterday!!)
                     } else {
-                        _currencyYesterday.value = ApiResult.Error("Error fetching yesterday currency: ${response.message()}")
-                        Log.e("CurrencyDetailViewModel", "Error fetching yesterday currency: ${response.message()}")
+                        _currencyYesterday.value = ApiResult.Error("Error fetching previous value of this currency: ${response.message()}")
+                        Log.e("CurrencyDetailViewModel", "Error fetching previous value of this currency: ${response.message()}")
                     }
                 }
             } catch (e: Exception) {
                 _currency.value = ApiResult.Error("Exception fetching currency: ${e.message}")
-                _currencyYesterday.value = ApiResult.Error("Exception fetching yesterday currency: ${e.message}")
-                Log.e("CurrencyDetailViewModel", "Exception fetching (yesterday) currency: ${e.message}")
+                _currencyYesterday.value = ApiResult.Error("Exception fetching previous value of this currency: ${e.message}")
+                Log.e("CurrencyDetailViewModel", "Exception fetching (previous) value of this currency: ${e.message}")
             }
         }
     }
