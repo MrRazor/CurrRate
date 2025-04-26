@@ -1,6 +1,5 @@
 package cz.razor.currrate.items
 
-
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -22,9 +21,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import cz.razor.currrate.R
 import cz.razor.currrate.consts.Routes
 import cz.razor.currrate.data.CurrencyInfo
 import cz.razor.currrate.data.CurrencyRate
@@ -45,7 +46,12 @@ fun CurrencyItem(navController: NavController,
             .fillMaxWidth()
             .padding(8.dp)
             .clickable {
-                navController.navigate(Routes.currencyDetail(currencyRate.toCurrency, currencyRate.date))
+                navController.navigate(
+                    Routes.currencyDetail(
+                        currencyRate.toCurrency,
+                        currencyRate.date
+                    )
+                )
             },
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -55,7 +61,7 @@ fun CurrencyItem(navController: NavController,
             Text(text = "Rate: ${currencyRate.rate} ${currencyRate.toCurrency}")
         }
         IconButton(onClick = {  navController.navigate(Routes.currencyDetail(currencyRate.toCurrency, currencyRate.date)) }) {
-            Icon(Icons.Filled.Info, contentDescription = "Detail")
+            Icon(Icons.Filled.Info, contentDescription = stringResource(R.string.detail))
         }
         IconButton(onClick = {
             if(!currencyInfo.isToCurrencyFavourite){
@@ -65,9 +71,9 @@ fun CurrencyItem(navController: NavController,
             }
         }) {
             if (currencyInfo.isToCurrencyFavourite) {
-                Icon(Icons.Filled.Favorite, contentDescription = "Remove from Favorites")
+                Icon(Icons.Filled.Favorite, contentDescription = stringResource(R.string.remove_from_favorites))
             } else {
-                Icon(Icons.Filled.FavoriteBorder, contentDescription = "Add to Favorites")
+                Icon(Icons.Filled.FavoriteBorder, contentDescription = stringResource(R.string.add_to_favorites))
             }
         }
     }
@@ -78,7 +84,7 @@ fun CurrencyItem(navController: NavController,
             showDeleteConfirmDialog = false
         }, onDismiss = {
             showDeleteConfirmDialog = false
-            Toast.makeText(context, "User canceled the deletion", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.user_canceled_the_deletion), Toast.LENGTH_SHORT).show();
         })
     }
 }

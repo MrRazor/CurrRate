@@ -110,10 +110,10 @@ fun MainScreen(navController: NavHostController) {
                             icon = {
                                 Icon(
                                     item.icon,
-                                    contentDescription = item.title
+                                    contentDescription = stringResource(item.titleRes)
                                 )
                             },
-                            label = { Text(item.title) },
+                            label = { Text(stringResource(item.titleRes)) },
                             selected = selectedItem == index,
                             onClick = {
                                 selectedItem = index

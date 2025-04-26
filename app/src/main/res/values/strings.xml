@@ -30,4 +30,7 @@
     <string name="go_back">Go Back</string>
     <string name="settings">Settings</string>
     <string name="for_date">For date: %1$s</string>
+    <string name="detail">Detail</string>
+    <string name="currency_rates">Currency Rates</string>
+    <string name="favourites">Favourites</string>
 </resources>
