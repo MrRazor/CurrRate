@@ -44,7 +44,7 @@ class CurrencyGraphViewModel(private val frankfurterApi: FrankfurterApi,
                     _currencyList.value = ApiResult.Success(currencyRates)
                 }
             } catch (e: Exception) {
-                _currencyList.value = ApiResult.Error("Exception fetching currency list: ${e.message}")
+                _currencyList.value = ApiResult.Error(e.message ?: "")
                 Log.e("CurrencyGraphViewModel", "Exception fetching currency list: ${e.message}")
             }
         }
@@ -75,7 +75,7 @@ class CurrencyGraphViewModel(private val frankfurterApi: FrankfurterApi,
                 }
             } else {
                 _currencyList.value =
-                    ApiResult.Error("Error fetching currency list: ${response.message()}")
+                    ApiResult.Error(response.message())
                 Log.e(
                     "CurrencyGraphViewModel",
                     "Error fetching currency list: ${response.message()}"

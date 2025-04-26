@@ -55,7 +55,7 @@ class CurrencyDetailViewModel(private val frankfurterApi: FrankfurterApi,
                         currencyRate = currencyRateRepository.getRate(baseCurrency, to, date)
                         _currency.value = ApiResult.Success(currencyRate!!)
                     } else {
-                        _currency.value = ApiResult.Error("Error fetching currency: ${response.message()}")
+                        _currency.value = ApiResult.Error(response.message())
                         Log.e("CurrencyDetailViewModel", "Error fetching currency: ${response.message()}")
                     }
                 }
@@ -69,13 +69,13 @@ class CurrencyDetailViewModel(private val frankfurterApi: FrankfurterApi,
                         currencyRateYesterday = currencyRateRepository.getRate(baseCurrency, to, yesterdayDate)
                         _currencyYesterday.value = ApiResult.Success(currencyRateYesterday!!)
                     } else {
-                        _currencyYesterday.value = ApiResult.Error("Error fetching previous value of this currency: ${response.message()}")
+                        _currencyYesterday.value = ApiResult.Error(response.message())
                         Log.e("CurrencyDetailViewModel", "Error fetching previous value of this currency: ${response.message()}")
                     }
                 }
             } catch (e: Exception) {
-                _currency.value = ApiResult.Error("Exception fetching currency: ${e.message}")
-                _currencyYesterday.value = ApiResult.Error("Exception fetching previous value of this currency: ${e.message}")
+                _currency.value = ApiResult.Error(e.message ?: "")
+                _currencyYesterday.value = ApiResult.Error(e.message ?: "")
                 Log.e("CurrencyDetailViewModel", "Exception fetching (previous) value of this currency: ${e.message}")
             }
         }
@@ -96,12 +96,12 @@ class CurrencyDetailViewModel(private val frankfurterApi: FrankfurterApi,
                         currencyInfo = currencyInfoRepository.getByCode(code)
                         _currencyDetail.value = ApiResult.Success(currencyInfo!!)
                     } else {
-                        _currencyDetail.value = ApiResult.Error("Error fetching currency detail: ${response.message()}")
+                        _currencyDetail.value = ApiResult.Error(response.message())
                         Log.e("CurrencyDetailViewModel", "Error fetching currency detail: ${response.message()}")
                     }
                 }
             } catch (e: Exception) {
-                _currencyDetail.value = ApiResult.Error("Exception fetching currency detail: ${e.message}")
+                _currencyDetail.value = ApiResult.Error(e.message ?: "")
                 Log.e("CurrencyDetailViewModel", "Exception fetching currency detail: ${e.message}")
             }
         }

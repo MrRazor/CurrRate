@@ -48,12 +48,12 @@ class SettingsViewModel(private val frankfurterApi: FrankfurterApi,
                         _currencyCodeList.value = ApiResult.Success(currencyInfoList)
                     }
                     else {
-                        _currencyCodeList.value = ApiResult.Error("Error fetching currency code list: ${response.message()}")
+                        _currencyCodeList.value = ApiResult.Error(response.message())
                         Log.e("SettingsViewModel", "Error fetching currency code list: ${response.message()}")
                     }
                 }
             } catch (e: Exception) {
-                _currencyCodeList.value = ApiResult.Error("Exception fetching currency code list: ${e.message}")
+                _currencyCodeList.value = ApiResult.Error(e.message ?: "")
                 Log.e("SettingsViewModel", "Exception fetching currency code list: ${e.message}")
             }
         }

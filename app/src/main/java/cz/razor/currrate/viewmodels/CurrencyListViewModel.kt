@@ -46,12 +46,12 @@ class CurrencyListViewModel(private val frankfurterApi: FrankfurterApi,
                         currencyRateList = currencyRateRepository.getLatestRatesForBase(baseCurrency)
                         _currencyList.value = ApiResult.Success(currencyRateList)
                     } else {
-                        _currencyList.value = ApiResult.Error("Error fetching currency list: ${response.message()}")
+                        _currencyList.value = ApiResult.Error(response.message())
                         Log.e("CurrencyListViewModel", "Error fetching currency list: ${response.message()}")
                     }
                 }
             } catch (e: Exception) {
-                _currencyList.value = ApiResult.Error("Exception fetching currency list: ${e.message}")
+                _currencyList.value = ApiResult.Error(e.message ?: "")
                 Log.e("CurrencyListViewModel", "Exception fetching currency list: ${e.message}")
             }
         }
@@ -73,12 +73,12 @@ class CurrencyListViewModel(private val frankfurterApi: FrankfurterApi,
                         _currencyDetailList.value = ApiResult.Success(currencyInfoList)
                     }
                     else {
-                        _currencyDetailList.value = ApiResult.Error("Error fetching currency detail list: ${response.message()}")
+                        _currencyDetailList.value = ApiResult.Error(response.message())
                         Log.e("CurrencyListViewModel", "Error fetching currency detail list: ${response.message()}")
                     }
                 }
             } catch (e: Exception) {
-                _currencyDetailList.value = ApiResult.Error("Exception fetching currency detail list: ${e.message}")
+                _currencyDetailList.value = ApiResult.Error(e.message ?: "")
                 Log.e("CurrencyListViewModel", "Exception fetching currency detail list: ${e.message}")
             }
         }
