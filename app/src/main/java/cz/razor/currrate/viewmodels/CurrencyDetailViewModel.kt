@@ -52,7 +52,7 @@ class CurrencyDetailViewModel(private val frankfurterApi: FrankfurterApi,
                     val response = frankfurterApi.getRatesForDay(date.toString(), baseCurrency, to)
                     if (response.isSuccessful) {
                         currencyRateRepository.saveSingleDayResponse(response.body()!!)
-                        currencyRate = currencyRateRepository.getRate(baseCurrency, to, date)
+                        currencyRate = currencyRateRepository.getRate(baseCurrency, to, LocalDate.parse(response.body()!!.date))
                         _currency.value = ApiResult.Success(currencyRate!!)
                     } else {
                         _currency.value = ApiResult.Error(response.message())
@@ -66,7 +66,7 @@ class CurrencyDetailViewModel(private val frankfurterApi: FrankfurterApi,
                     val response = frankfurterApi.getRatesForDay(yesterdayDate.toString(), baseCurrency, to)
                     if (response.isSuccessful) {
                         currencyRateRepository.saveSingleDayResponse(response.body()!!)
-                        currencyRateYesterday = currencyRateRepository.getRate(baseCurrency, to, yesterdayDate)
+                        currencyRateYesterday = currencyRateRepository.getRate(baseCurrency, to, LocalDate.parse(response.body()!!.date))
                         _currencyYesterday.value = ApiResult.Success(currencyRateYesterday!!)
                     } else {
                         _currencyYesterday.value = ApiResult.Error(response.message())
